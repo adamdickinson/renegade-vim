@@ -1,0 +1,168 @@
+# React
+snippet rfc "React Functional Component" b
+import React from "react"
+import PropTypes from "prop-types"
+import "./style.sass"
+
+
+
+export const ${1:`!v expand('%:p:h:t')`} = props => (
+
+)
+
+
+
+$1.propTypes = {
+	children: PropTypes.node
+}
+
+
+
+$1.displayName = "$1"
+
+
+
+export default $1
+endsnippet
+
+
+
+# React
+snippet crfc "Connected React Functional Component" b
+import React from "react"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
+import "./style.sass"
+
+
+
+export const ${1:`!v expand('%:p:h:t')`} = props => (
+
+)
+
+
+
+$1.propTypes = {
+	children: PropTypes.node
+}
+
+
+
+$1.displayName = "$1"
+
+
+
+const mapDispatchToProps = dispatch => {
+	return {
+	}
+}
+
+
+
+const mapStateToProps = state => {
+	return {
+	}
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)($1)
+endsnippet
+
+
+
+snippet rss "React Storybook Story" b
+import React from "react"
+import { storiesOf } from "@storybook/react"
+import { action } from "@storybook/addon-actions"
+
+import ${1:`!v expand('%:p:h:t')`} from "./"
+
+
+
+const actions = {
+}
+
+
+
+storiesOf("$1", module)
+  .add("default", () => <$1 {...actions}></$1>)
+endsnippet
+
+snippet rct "React Component Test" b
+import React from "react"
+import ${1:`!v expand('%:p:h:t')`} from "./"
+
+
+
+describe('$1 component', () => {
+
+  it('should render correctly', () => {
+    const expected = shallow(<$1 />)
+    expect(expected).toMatchSnapshot()
+  })
+
+})
+endsnippet
+
+
+
+snippet crct "Connected React Component Test" b
+import React from "react"
+import ReduxThunk from "redux-thunk"
+import configureStore from "redux-mock-store"
+import { Provider } from "react-redux"
+
+import Connected$1, { $1 } from "./"
+const mockStore = configureStore([ ReduxThunk ])
+
+
+
+describe('${1:`!v expand('%:p:h:t')`} component', () => {
+
+  it('should render correctly', () => {
+    const expected = shallow(<$1 />)
+    expect(expected).toMatchSnapshot()
+  })
+
+
+
+	it('should run actions', () => {
+		const actions = {
+			onAction: jest.fn()
+		}
+
+		const component = shallow(<$1 {...actions} />)
+
+
+		// Do This Action
+		component.find("Trigger").prop("onAction")()
+		expect(actions.onAction).toBeCalledWith()
+
+	})
+
+
+
+	it('should connect to redux', () => {
+		const store = mockStore()
+		const component = mount(<Provider store={store}><Connected$1 /></Provider>)
+
+
+		// Do This Action
+		component.find("Trigger").prop("onAction")()
+		expect(store.getActions()).toMatchSnapshot()
+		store.clearActions()
+
+	})
+
+})
+endsnippet
+
+
+
+snippet rat "Redux Action Test" b
+it('creates $1 action', () => 
+	expect( actions.$2() )
+		.toEqual({ type: types.$1 })
+)
+endsnippet

@@ -11,6 +11,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'Valloric/YouCompleteMe'
+Plug 'SirVer/ultisnips'
 call plug#end()
 
 
@@ -39,6 +40,11 @@ let mapleader = " "
 let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
 let g:multi_cursor_exit_from_visual_mode=0
 let g:multi_cursor_exit_from_insert_mode=0
+let g:user_emmet_leader_key='<C-Z>'
+
+let g:UltiSnipsExpandTrigger="<C-L>"
+let g:UltiSnipsSnippetDirectories=["renegade-snippets"]
+
 set noerrorbells visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
 
@@ -49,10 +55,11 @@ nmap <leader>l :bnext<CR>
 nmap <leader>h :bprevious<CR>
 nmap <leader>bp :vp <BAR> bd #<CR>
 nmap <leader>bl :ls<CR>
+nnoremap <leader>ji :w<CR>:call clearmatches()<CR>:let cmd = system('unused -v true ' . expand('%'))<CR>:exec cmd<CR>
 
 
 
-
+let g:jsx_ext_required = 0
 let g:lightline = {
   \ 'colorscheme': 'nord',
   \ 'active': {
