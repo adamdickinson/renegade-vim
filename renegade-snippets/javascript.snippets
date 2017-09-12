@@ -13,7 +13,7 @@ export const ${1:`!v expand('%:p:h:t')`} = props => (
 
 
 $1.propTypes = {
-	children: PropTypes.node
+  children: PropTypes.node
 }
 
 
@@ -43,7 +43,7 @@ export const ${1:`!v expand('%:p:h:t')`} = props => (
 
 
 $1.propTypes = {
-	children: PropTypes.node
+  children: PropTypes.node
 }
 
 
@@ -53,15 +53,15 @@ $1.displayName = "$1"
 
 
 const mapDispatchToProps = dispatch => {
-	return {
-	}
+  return {
+  }
 }
 
 
 
 const mapStateToProps = state => {
-	return {
-	}
+  return {
+  }
 }
 
 
@@ -95,11 +95,24 @@ import ${1:`!v expand('%:p:h:t')`} from "./"
 
 
 
-describe('$1 component', () => {
+describe("$1 component", () => {
 
-  it('should render correctly', () => {
-    const expected = shallow(<$1 />)
-    expect(expected).toMatchSnapshot()
+  it("should render correctly", () =>
+    expect(shallow(<$1 />))
+      .toMatchSnapshot()
+  )
+
+
+
+  it("should run actions", () => {
+    const actions = {
+      onRunActions: jest.fn()
+    }
+
+    const component = shallow(<$1 {...actions} />)
+
+    view.find("a").prop("onClick")()
+    expect(actions.onRunActions).toBeCalledWith()
   })
 
 })
@@ -111,49 +124,52 @@ snippet crct "Connected React Component Test" b
 import React from "react"
 import ReduxThunk from "redux-thunk"
 import configureStore from "redux-mock-store"
-import { Provider } from "react-redux"
 
-import Connected$1, { $1 } from "./"
-const mockStore = configureStore([ ReduxThunk ])
+import { ${1:`!v expand('%:p:h:t')`}, mapDispatchToProps, mapStateToProps } from "./"
 
 
 
-describe('${1:`!v expand('%:p:h:t')`} component', () => {
+describe("$1 component", () => {
 
-  it('should render correctly', () => {
-    const expected = shallow(<$1 />)
-    expect(expected).toMatchSnapshot()
+  const mockStore = configureStore([ ReduxThunk ])
+
+
+
+  it("should render correctly", () =>
+    expect(shallow(<$1 />))
+      .toMatchSnapshot()
+  )
+
+
+
+  it("should run actions", () => {
+    const actions = {
+      onRunActions: jest.fn()
+    }
+
+    const component = shallow(<$1 {...actions} />)
+
+    view.find("a").prop("onClick")()
+    expect(actions.onRunActions).toBeCalledWith()
   })
 
 
 
-	it('should run actions', () => {
-		const actions = {
-			onAction: jest.fn()
-		}
-
-		const component = shallow(<$1 {...actions} />)
-
-
-		// Do This Action
-		component.find("Trigger").prop("onAction")()
-		expect(actions.onAction).toBeCalledWith()
-
-	})
+  it("should map state to props", () => {
+    const props = mapStateToProps({})
+		expect(props).toMatchSnapshot()
+  })
 
 
 
-	it('should connect to redux', () => {
-		const store = mockStore()
-		const component = mount(<Provider store={store}><Connected$1 /></Provider>)
+  it("should map actions to props", async () => {
+    const store = mockStore()
+    const props = mapDispatchToProps(store.dispatch)
+    const actionsOf = test.actionsOf(store)
 
-
-		// Do This Action
-		component.find("Trigger").prop("onAction")()
-		expect(store.getActions()).toMatchSnapshot()
-		store.clearActions()
-
-	})
+    await actionsOf(() => props.runAction()).then(actions =>
+      expect(actions).toMatchSnapshot("$1 component should map runAction to props"))
+  })
 
 })
 endsnippet
@@ -161,8 +177,8 @@ endsnippet
 
 
 snippet rat "Redux Action Test" b
-it('creates $1 action', () => 
-	expect( actions.$2() )
-		.toEqual({ type: types.$1 })
+it("creates $1 action", () =>
+  expect( actions.$2() )
+    .toEqual({ type: types.$1 })
 )
 endsnippet
