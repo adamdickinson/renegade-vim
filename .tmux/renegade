@@ -1,0 +1,26 @@
+#!/bin/sh
+cd /data/$1
+
+
+if [ -e yarn.lock ]; then
+  NODER="yarn"
+else
+  NODER="npm"
+fi
+
+
+tmux new-session -d -n "Background"  
+tmux split-window -h -p 35 "$NODER run storybook" 
+tmux split-window -v -p 50 "$NODER start"
+
+tmux new-window -n "Foreground" 'vim'
+if grep test:watch package.json > /dev/null ; then 
+  tmux split-window -h -p 35 "$NODER test:coverage"
+else
+  tmux split-window -h -p 35 "$NODER test"
+fi
+
+tmux select-pane -t "0.0"
+tmux select-pane -t "1.0"
+
+tmux -2 attach-session -d

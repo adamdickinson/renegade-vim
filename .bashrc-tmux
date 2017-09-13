@@ -1,0 +1,42 @@
+# --- RENEGADE VIM START --- #
+# Aliases GALORE #
+alias project='~/.tmux/renegade'
+alias git='hub'
+# Aliases GALORE #
+
+# Tab Completion #
+_project_options() {
+  PREFIXPATH="/data/"
+  PARTIAL=${COMP_WORDS[COMP_CWORD]}
+  MATCH="$PREFIXPATH$PARTIAL"
+
+  DEPTH=$(grep -o "/" <<< "$PARTIAL" | wc -l)
+
+  DIRSLEFT=$(expr 2 - $DEPTH)
+  OPTIONS=( $(find $MATCH* -mindepth $DIRSLEFT -maxdepth $DIRSLEFT -type d 2> /dev/null) )
+
+  # Prepare 'step' options - next directory matches
+  STEPOPTIONS=()
+  for O in ${OPTIONS[@]}; do
+    STEPOPTION="${O:${#PREFIXPATH}}"
+    STEPDEPTH=$(expr $DEPTH + 1)
+    STEPOPTION=("$(echo $STEPOPTION | cut -f1,$STEPDEPTH -d'/')")
+    STEPOPTIONS+=("$(echo $STEPOPTION | cut -f1,$STEPDEPTH -d'/')")
+  done
+  STEPOPTIONS=( $( echo "${STEPOPTIONS[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )
+
+
+  if [ "${#STEPOPTIONS[@]}" -gt 1 ]; then
+    COMPREPLY=( $(echo ${STEPOPTIONS[@]}) )
+
+  else
+    COMPREPLY=()
+    for P in ${OPTIONS[@]}; do
+      COMPREPLY+=("${P:${#PREFIXPATH}}")
+    done
+  fi
+}
+
+complete -F _project_options project
+# Tab Completion #
+# --- RENEGADE VIM END --- #

@@ -24,7 +24,7 @@ if [ -f $DIR/.vimrc ]; then
     exit 1
   else
     echo -e "\r$G ✓ Loaded vimrc (overwritten)                                                  $RESET"
-    cp $DIR/.vimrc ~/.vimrc 
+    cp $DIR/.vimrc ~/.vimrc
   fi
 
 else
@@ -34,7 +34,7 @@ fi
 
 
 
-# 2. Install vim-plug 
+# 2. Install vim-plug
 echo -e " : Loading vim-plug\c"
 if [ -f ~/.vim/autoload/plug.vim ]; then
   echo -e "\r$G ✓ Loaded vim-plug (already exists)                                                  $RESET"
@@ -64,17 +64,36 @@ echo -e "\r$G ✓ Snippets copied     $RESET"
 
 
 
-# 5. Install YouCompleteMe 
-echo -e " : Preparing YouCompleteMe\c"
-pushd ~/.vim/plugged/YouCompleteMe/ > /dev/null
-git submodule update --init --recursive > /dev/null 2>&1
+# 5. Install YouCompleteMe
+echo -e " : Skipping YouCompleteMe"
+if false; then
+  echo -e " : Preparing YouCompleteMe\c"
+  pushd ~/.vim/plugged/YouCompleteMe/ > /dev/null
+  git submodule update --init --recursive > /dev/null 2>&1
 
-echo -e "\r : Installing YouCompleteMe  \c"
-python install.py --tern-completer > /dev/null 2>&1
-popd > /dev/null
+  echo -e "\r : Installing YouCompleteMe  \c"
+  python install.py --tern-completer > /dev/null 2>&1
+  popd > /dev/null
 
-echo -e "\r$G ✓ YouCompleteMe Installed   $RESET"
+  echo -e "\r$G ✓ YouCompleteMe Installed   $RESET"
+fi
 
+
+
+# 6. Install tmux/project
+echo -e " : Installing tmux\c"
+gnome-terminal -- bash -c 'sudo pacman -S tmux'
+ 
+echo -e "\r : Copying tmux config\c"
+cp $DIR/.tmux.conf ~/.tmux.conf
+
+echo -e "\r : Copying tmux bash config\c"
+cat $DIR/.bashrc-tmux >> ~/.bashrc
+mkdir -p ~/.tmux
+echo $DIR/.tmux/renegade >> ~/.tmux/renegade
+chmod +x ~/.tmux/renegade
+
+echo -e "\r$G ✓ Tmux Installed          $RESET"
 
 
 echo
