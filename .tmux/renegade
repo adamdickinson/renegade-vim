@@ -10,14 +10,14 @@ fi
 
 
 tmux new-session -d -n "Background"  
-tmux split-window -h -p 35 "$NODER run storybook" 
-tmux split-window -v -p 50 "$NODER start"
+tmux split-window -h -p 35 "echo 'Press ENTER to start storybook'; read; $NODER run storybook" 
+tmux split-window -v -p 50 "echo 'Press ENTER to start compiling'; read; $NODER start"
 
 tmux new-window -n "Foreground" 'vim'
 if grep test:watch package.json > /dev/null ; then 
-  tmux split-window -h -p 35 "$NODER test:coverage"
+  tmux split-window -h -p 35 "echo 'Press ENTER to start testing'; read; $NODER test:coverage"
 else
-  tmux split-window -h -p 35 "$NODER test"
+  tmux split-window -h -p 35 "echo 'Press ENTER to start testing'; read; $NODER test"
 fi
 
 tmux select-pane -t "0.0"

@@ -59,7 +59,7 @@ echo -e "\r$G ✓ Plugins installed      $RESET"
 
 # 4. Copy Snippets
 echo -e " : Copying snippets\c"
-cp -R $DIR/renegade-snippets ~/.vim/renegade-snippets
+cp -R $DIR/.vim/renegade-snippets ~/.vim/renegade-snippets
 echo -e "\r$G ✓ Snippets copied     $RESET"
 
 
